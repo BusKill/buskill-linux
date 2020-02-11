@@ -1,0 +1,2 @@
+# https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/sysrq.rst
+ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_MODEL}=="Micromax_A74", RUN+="echo o > /proc/sysrq-trigger"

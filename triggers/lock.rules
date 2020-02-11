@@ -1,0 +1,1 @@
+ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_MODEL}=="Micromax_A74", RUN+="DISPLAY=:0 xscreensaver-command -lock"
