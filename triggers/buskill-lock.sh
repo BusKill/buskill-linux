@@ -1,8 +1,15 @@
 #!/bin/bash
 set -x
 
-# TODO: add disclaimer to README.md before pushing commits to github.com
-# TODO: flowerbox
+################################################################################
+# File:    buskill-lock.sh
+# Purpose: Cross-platform screen locking trigger script for BusKill Kill Cord
+#          For more info, see: https://buskill.in/
+# Authors: Michael Altfield <michael@buskill.in>
+# Created: 2020-03-10
+# Updated: 2020-03-10
+# Version: 0.1
+################################################################################
 
 ############
 # SETTINGS #
