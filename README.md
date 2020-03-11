@@ -1,6 +1,16 @@
 # buskill-linux
 BusKill Kill Cord using udev on linux.
 
+# Danger! Disclaimer
+
+This repository contains experimental software. Using any of the contents of this repo may or may not lead to corruption or total permanent deletion of some or all of your data, and we cannot be responsible for any data loss that has occurred as a result of using this experimental software.
+
+The software in this repo is provided openly and is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPLv3</a> license. All content here is consistent with the limitations of liabilities outlined in this license.
+
+I highly recommend that any experiments with the software included in this repo are used exclusively on a disposable machine containing no valuable data.
+
+If data loss is a concern for you, then leave now and do not proceed with using any of this software. You have been warned.
+
 ![](images/busKill_featuredImage.jpg)
 
 # Press
