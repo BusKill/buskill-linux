@@ -3,7 +3,7 @@ BusKill Kill Cord using udev on linux.
 
 # Danger! Disclaimer
 
-This repository contains experimental software. Using any of the contents of this repo may or may not lead to corruption or total permanent deletion of some or all of your data, and we cannot be responsible for any data loss that has occurred as a result of using this experimental software.
+This repository contains experimental software. Using any of the contents of this repo may or may not lead to corruption or permanent, complete, and irreversible data loss. We cannot be responsible for any data loss that has occurred as a result of using this experimental software.
 
 The software in this repo is provided openly and is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPLv3</a> license. All content here is consistent with the limitations of liabilities outlined in this license.
 
