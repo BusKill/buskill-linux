@@ -1,0 +1,9 @@
+# lock screen
+ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_MODEL}=="Micromax_A74", RUN+="/usr/local/bin/busKill-lock.sh"
+
+# "soft" shutdown
+#ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_MODEL}=="Micromax_A74", RUN+="shutdown -h now"
+
+# "hard" shutdown
+# https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/sysrq.rst
+#ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_MODEL}=="Micromax_A74", RUN+="echo o > /proc/sysrq-trigger"

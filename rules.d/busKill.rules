@@ -1,0 +1,7 @@
+#ACTION=="remove", SUBSYSTEM=="usb", RUN+="DISPLAY=:0 xscreensaver-command -lock"
+#ACTION=="remove", SUBSYSTEM=="usb", RUN+="DISPLAY=:0 sudo -u user xdg-screensaver lock || sudo -u user XDG_RUNTIME_DIR=`find /run -name Xauthority | cut -d/ -f1-4` xdg-screensaver lock"
+#ACTION=="remove", SUBSYSTEM=="usb", RUN+="/usr/bin/echo 'triggered' > /tmp/buskill"
+#ACTION=="remove", SUBSYSTEM=="usb", RUN+="/usr/bin/notify-send 'buskill'"
+#ACTION=="remove", SUBSYSTEM=="usb", RUN+="sudo /usr/local/bin/busKill-lock.sh &>> /tmp/buskill.log"
+#ACTION=="remove", SUBSYSTEM=="usb", RUN+="/usr/bin/bash -c '/usr/local/bin/busKill-lock.sh &>> /tmp/buskill.log'"
+ACTION=="remove", SUBSYSTEM=="usb", RUN+="/usr/local/bin/busKill-lock.sh"
