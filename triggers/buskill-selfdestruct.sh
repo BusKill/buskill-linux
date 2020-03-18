@@ -112,9 +112,8 @@ for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' );
 	device="`${ECHO} \"${line}\" | ${AWK} '{print \$1}'`"
 	${ECHO} -e "\t${device}"
 
-	# https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions
-	# TODO TODO: use luksDump to determine size of header so we overwrite just up until the data begins, so that header restores are possible. If that fails, just overwrite the first 10MiB
-	#head -c ${size} > ${device}; dd bs=512 count=${count} if=/dev/urandom of=${device} &
+	# TODO luksErase || head -c 20M /dev/urandom > ${device} &
+
 	writes="${writes} $!"
 	# TODO: store pid of amped-off write tasks
 done
