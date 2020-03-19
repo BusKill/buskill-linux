@@ -112,10 +112,14 @@ for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' );
 	device="`${ECHO} \"${line}\" | ${AWK} '{print \$1}'`"
 	${ECHO} -e "\t${device}"
 
-	# TODO luksErase || head -c 20M /dev/urandom > ${device} &
+	# erases all keyslots, making the LUKS container "permanently inaccessible"
+	cryptsetup luksErase --batch-mode "${device}" || head -c 20M /dev/urandom > ${device} &
 
+	# TODO: overwrite plaintext metadata
+
+	# store the pid of the above write tasks so we can try to wait for it to
+	# flush to disk later -- before triggering a brutal hard-shutdown
 	writes="${writes} $!"
-	# TODO: store pid of amped-off write tasks
 done
 
 # TODO: wait until all the write tasks above have completed
