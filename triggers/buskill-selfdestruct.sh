@@ -37,8 +37,7 @@ OD=`which od` || echo "ERROR: Unable to find od"
 ##############
 
 # re-run as root
-if [[ $EUID -ne 0 ]];
-then
+if [[ $EUID -ne 0 ]]; then
     exec sudo /bin/bash "$0" "$@"
 fi
 
@@ -86,7 +85,7 @@ ${BUSKILL_LOCK} &
 ${ECHO} "INFO: shredding LUKS header (plaintext metadata and keyslots with encrypted master decryption key)"
 writes=''
 IFS=$'\n'
-for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' ); do
+for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypt' ); do
 
 	device="`${ECHO} \"${line}\" | ${AWK} '{print \$1}'`"
 	${ECHO} -e "\t${device}"
@@ -146,7 +145,8 @@ done
 #######################
 
 # wait until all the write tasks above have completed
-wait "${writes}"
+# note: do *not* put quotes around this arg or the whitespace will break wait
+wait ${writes}
 
 # clear write buffer to ensure headers overwrites are actually synced to disks
 sync; echo 3 > /proc/sys/vm/drop_caches
