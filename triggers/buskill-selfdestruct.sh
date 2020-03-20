@@ -80,35 +80,9 @@ fi
 # TODO: uncomment
 #${BUSKILL_LOCK} &
 
-#########
-# TMPFS #
-#########
-
-# now we create a slim rootfs execution environment in memory that has the tools
-# we need and is not dependent on encrypted volumes that we're about to destroy
-
-# TODO: bash, dd, sync, shutdown, poweroff, echo, ls, awk, grep, cryptsetup, lsblk
-# https://github.com/vianney/arch-luks-suspend/blob/master/arch-luks-suspend
-
 #####################
 # WIPE LUKS VOLUMES #
 #####################
-
-# clear page caches in memory
-sync; echo 3 > /proc/sys/vm/drop_caches
-
-# suspend each currently-decrypted LUKS volume
-${ECHO} "INFO: removing decryption keys from memory"
-for device in $( ${LS} -1 "/dev/mapper" ); do
-
-	${ECHO} -e "\t${device}";
-	# TODO: uncomment
-	#${CRYPTSETUP} luksSuspend $device &
-
-	# clear page caches in memory (again)
-	sync; echo 3 > /proc/sys/vm/drop_caches
-
-done
 
 # overwrite luks headers
 ${ECHO} "INFO: shredding LUKS header (plaintext metadata and keyslots with encrypted master decryption key)"
@@ -180,6 +154,23 @@ wait "${writes}"
 
 # clear write buffer to ensure headers overwrites are actually synced to disks
 sync; echo 3 > /proc/sys/vm/drop_caches
+
+#################################
+# WIPE DECRYPTION KEYS FROM RAM #
+#################################
+
+# suspend each currently-decrypted LUKS volume
+${ECHO} "INFO: removing decryption keys from memory"
+for device in $( ${LS} -1 "/dev/mapper" ); do
+
+	${ECHO} -e "\t${device}";
+	# TODO: uncomment
+	#${CRYPTSETUP} luksSuspend "${device}" &
+
+	# clear page caches in memory (again)
+	sync; echo 3 > /proc/sys/vm/drop_caches
+
+done
 
 #############################
 # (IMMEDIATE) HARD SHUTDOWN #
