@@ -36,7 +36,11 @@ OD=`which od` || echo "ERROR: Unable to find od"
 # ROOT CHECK #
 ##############
 
-# TODO: attempt to become root or fail
+# re-run as root
+if [[ $EUID -ne 0 ]];
+then
+    exec sudo /bin/bash "$0" "$@"
+fi
 
 ###########
 # CONFIRM #
@@ -120,7 +124,8 @@ for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' );
 	###########################
 
 	# erases all keyslots, making the LUKS container "permanently inaccessible"
-	${CRYPTSETUP} luksErase --batch-mode "${device}" || ${HEAD} --bytes 20M /dev/urandom > ${device} &
+	# TODO: uncomment
+	#${CRYPTSETUP} luksErase --batch-mode "${device}" || ${HEAD} --bytes 20M /dev/urandom > ${device} &
 
 	# store the pid of the above write tasks so we can try to wait for it to
 	# flush to disk later -- before triggering a brutal hard-shutdown
@@ -159,10 +164,11 @@ for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' );
 		
 	# finally, shred that plaintext metadata; we do this in a new file descriptor
 	# to prevent bash from truncating if ${device} is a file
-	exec 5<> "${device}"
-	${HEAD} --bytes "${luksEndByte}" /dev/urandom >&5 &
-	writes="${writes} $!"
-	exec 5>&-
+	# TODO: uncomment
+	#exec 5<> "${device}"
+	#${HEAD} --bytes "${luksEndByte}" /dev/urandom >&5 &
+	#writes="${writes} $!"
+	#exec 5>&-
 done
 
 #######################
