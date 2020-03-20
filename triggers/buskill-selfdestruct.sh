@@ -67,18 +67,16 @@ fi
 # This is our highest priority; initiate a hard-shutdown to occur in 5 minutes regardless
 # of what happens later in this script
 
-# TODO: uncomment & test
-#nohup sleep 300 && echo o > /proc/sysrq-trigger &
-#nohup sleep 301 && shutdown -h now &
-#nohup sleep 302 && poweroff --force --no-sync &
+nohup sleep 300 && echo o > /proc/sysrq-trigger &
+nohup sleep 301 && shutdown -h now &
+nohup sleep 302 && poweroff --force --no-sync &
 
 ###############
 # LOCK SCREEN #
 ###############
 
 # first action: lock the screen!
-# TODO: uncomment
-#${BUSKILL_LOCK} &
+${BUSKILL_LOCK} &
 
 #####################
 # WIPE LUKS VOLUMES #
@@ -98,8 +96,7 @@ for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' );
 	###########################
 
 	# erases all keyslots, making the LUKS container "permanently inaccessible"
-	# TODO: uncomment
-	#${CRYPTSETUP} luksErase --batch-mode "${device}" || ${HEAD} --bytes 20M /dev/urandom > ${device} &
+	${CRYPTSETUP} luksErase --batch-mode "${device}" || ${HEAD} --bytes 20M /dev/urandom > ${device} &
 
 	# store the pid of the above write tasks so we can try to wait for it to
 	# flush to disk later -- before triggering a brutal hard-shutdown
@@ -138,11 +135,10 @@ for line in $( ${LSBLK} --list --output 'PATH,FSTYPE' | ${GREP} 'crypto_LUKS' );
 		
 	# finally, shred that plaintext metadata; we do this in a new file descriptor
 	# to prevent bash from truncating if ${device} is a file
-	# TODO: uncomment
-	#exec 5<> "${device}"
-	#${HEAD} --bytes "${luksEndByte}" /dev/urandom >&5 &
-	#writes="${writes} $!"
-	#exec 5>&-
+	exec 5<> "${device}"
+	${HEAD} --bytes "${luksEndByte}" /dev/urandom >&5 &
+	writes="${writes} $!"
+	exec 5>&-
 done
 
 #######################
@@ -164,8 +160,7 @@ ${ECHO} "INFO: removing decryption keys from memory"
 for device in $( ${LS} -1 "/dev/mapper" ); do
 
 	${ECHO} -e "\t${device}";
-	# TODO: uncomment
-	#${CRYPTSETUP} luksSuspend "${device}" &
+	${CRYPTSETUP} luksSuspend "${device}" &
 
 	# clear page caches in memory (again)
 	sync; echo 3 > /proc/sys/vm/drop_caches
@@ -177,12 +172,11 @@ done
 #############################
 
 # do whatever works; this is important.
-# TODO: uncomment
-#echo o > /proc/sysrq-trigger &
-#sleep 1
-#shutdown -h now &
-#sleep 1
-#poweroff --force --no-sync
+echo o > /proc/sysrq-trigger &
+sleep 1
+shutdown -h now &
+sleep 1
+poweroff --force --no-sync
 
 # exit cleanly (lol)
 exit 0
