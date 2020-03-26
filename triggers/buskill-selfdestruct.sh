@@ -66,9 +66,9 @@ fi
 # This is our highest priority; initiate a hard-shutdown to occur in 5 minutes regardless
 # of what happens later in this script
 
-nohup sleep 300 && echo o > /proc/sysrq-trigger &
-nohup sleep 301 && shutdown -h now &
-nohup sleep 302 && poweroff --force --no-sync &
+nohup sleep 60 && echo o > /proc/sysrq-trigger &
+nohup sleep 61 && shutdown -h now &
+nohup sleep 62 && poweroff --force --no-sync &
 
 ###############
 # LOCK SCREEN #
@@ -176,7 +176,7 @@ echo o > /proc/sysrq-trigger &
 sleep 1
 shutdown -h now &
 sleep 1
-poweroff --force --no-sync
+poweroff --force --no-sync &
 
 # exit cleanly (lol)
 exit 0
